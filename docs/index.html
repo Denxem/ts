@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Слоты Telegram Web App</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; margin-top: 40px; }
+  #result { font-size: 48px; margin-top: 20px; }
+  button { font-size: 24px; padding: 10px 20px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<h1>Слот-игра</h1>
+<button id="spin">Крутить</button>
+<div id="result">🎰 | 🎰 | 🎰</div>
+
+<script>
+const symbols = ["🍒", "🍋", "🍊", "🔔", "⭐"];
+
+document.getElementById('spin').onclick = () => {
+  let result = [];
+  for(let i=0; i<3; i++) {
+    result.push(symbols[Math.floor(Math.random()*symbols.length)]);
+  }
+  document.getElementById('result').innerText = result.join(' | ');
+};
+</script>
+
+</body>
+</html>
