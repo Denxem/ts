@@ -1,0 +1,21 @@
+body {
+  font-family: sans-serif;
+  background: #f9f9f9;
+  text-align: center;
+  margin: 0;
+  padding: 50px;
+}
+#slots {
+  font-size: 50px;
+  margin: 20px 0;
+}
+input {
+  padding: 10px;
+  font-size: 20px;
+  width: 100px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 20px;
+  margin-top: 10px;
+}
