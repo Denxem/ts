@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Telegram Slots Web App</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #121212; color: #eee; text-align: center; padding: 2rem; }
+  #slots { font-size: 5rem; margin: 2rem 0; }
+  button { font-size: 1.5rem; padding: 1rem 3rem; border: none; border-radius: 12px; background: #4caf50; color: white; cursor: pointer; }
+  #balance { font-size: 1.3rem; margin-top: 1rem; }
+</style>
+</head>
+<body>
+
+<h1>Слоты в Telegram</h1>
+<div id="slots">🍒 🍋 🍉</div>
+<button id="play">Играть</button>
+<div id="balance">Баланс: 1000</div>
+
+<script>
+  const tg = window.Telegram.WebApp;
+  tg.ready();
+
+  let balance = 1000;
+  const symbols = ["🍒", "🍋", "🍉", "🍇", "🔔", "⭐", "7️⃣"];
+  const slots = document.getElementById("slots");
+  const balanceDiv = document.getElementById("balance");
+  const playBtn = document.getElementById("play");
+
+  function spin() {
+    let result = [];
+    for (let i = 0; i < 3; i++) {
+      result.push(symbols[Math.floor(Math.random() * symbols.length)]);
+    }
+    return result;
+  }
+
+  function isWin(res) {
+    return res[0] === res[1] && res[1] === res[2];
+  }
+
+  function updateBalance(amount) {
+    balance += amount;
+    balanceDiv.textContent = "Баланс: " + balance;
+  }
+
+  playBtn.onclick = () => {
+    let bet = 100;
+    if (bet > balance) {
+      alert("Недостаточно монет");
+      return;
+    }
+    updateBalance(-bet);
+
+    let animationCount = 0;
+    let interval = setInterval(() => {
+      slots.textContent = spin().join(" ");
+      animationCount++;
+      if (animationCount > 10) {
+        clearInterval(interval);
+        let finalResult = spin();
+        slots.textContent = finalResult.join(" ");
+        if (isWin(finalResult)) {
+          let win = bet * 5;
+          alert(`🎉 Вы выиграли ${win} монет!`);
+          updateBalance(win);
+        } else {
+          alert("Увы, не выиграли. Попробуйте ещё.");
+        }
+        // Отправляем результат и баланс в бота
+        tg.sendData(JSON.stringify({result: finalResult, balance}));
+      }
+    }, 100);
+  };
+</script>
+
+</body>
+</html>
